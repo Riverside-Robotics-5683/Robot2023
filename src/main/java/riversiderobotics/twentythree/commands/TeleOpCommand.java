@@ -13,10 +13,7 @@ public class TeleOpCommand extends CommandBase
     }
 
     @Override
-    public void initialize()
-    {
-        subsystem.teleOpInit();
-    }
+    public void initialize() {}
 
    @Override
    public void execute()
