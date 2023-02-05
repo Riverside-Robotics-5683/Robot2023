@@ -6,8 +6,14 @@
 package riversiderobotics.twentythree;
 
 
+import edu.wpi.first.wpilibj.Compressor;
+import edu.wpi.first.wpilibj.PneumaticsModuleType;
+
 public final class Constants
 {
+
+
+
     //DS
     public static final int DRIVER_PORT = 0;
 
