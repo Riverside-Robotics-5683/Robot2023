@@ -7,6 +7,7 @@ import edu.wpi.first.wpilibj.Solenoid;
 
 public class pneumatics {
 
+   /*
     Compressor phCompressor = new Compressor(1, PneumaticsModuleType.REVPH);
     phCompressor.enableDigital();
     phCompressor.disable();
@@ -16,6 +17,7 @@ public class pneumatics {
     Solenoid sisyphusPH = new Solenoid(PneumaticsModuleType.REVPH, 1);
     sisyphusPH.set(true);
     sisyphusPH.set(false);
+     */
 
 
 
