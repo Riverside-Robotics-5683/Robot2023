@@ -1,7 +1,7 @@
-package riversiderobotics.twentythree.commands;
+package riversiderobotics.phil.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import riversiderobotics.twentythree.subsystems.TeleOpSubsystem;
+import riversiderobotics.phil.subsystems.TeleOpSubsystem;
 
 public class TeleOpCommand extends CommandBase
 {
@@ -13,11 +13,19 @@ public class TeleOpCommand extends CommandBase
     }
 
     @Override
-    public void initialize() {}
+    public void initialize()
+    {
+        subsystem.initPneumatics();
+    }
 
    @Override
    public void execute()
    {
        subsystem.periodic();
+   }
+
+   public void end()
+   {
+       subsystem.disablePneumatics();
    }
 }

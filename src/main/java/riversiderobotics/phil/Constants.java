@@ -1,13 +1,5 @@
-// Copyright (c) FIRST and other WPILib contributors.
+package riversiderobotics.phil;
 
-// Open Source Software; you can modify and/or share it under the terms of
-// the WPILib BSD license file in the root directory of this project.
-
-package riversiderobotics.twentythree;
-
-
-import edu.wpi.first.wpilibj.Compressor;
-import edu.wpi.first.wpilibj.PneumaticsModuleType;
 
 public final class Constants
 {
@@ -24,4 +16,9 @@ public final class Constants
     public static final int MOTOR_TR = 3;
     public static final int MOTOR_MR = 4;
     public static final int MOTOR_BR = 5;
+
+    //Pneumatics
+    public static final int COMPRESSOR = 0;
+    public static final int GEARBOX_LEFT_CHANNEL = -1;
+    public static final int GEARBOX_RIGHT_CHANNEL = -2;
 }
