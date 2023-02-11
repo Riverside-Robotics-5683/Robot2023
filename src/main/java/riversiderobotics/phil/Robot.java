@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import riversiderobotics.phil.commands.TeleOpCommand;
+import riversiderobotics.phil.commands.TestCommand;
 
 
 /**
@@ -21,7 +22,8 @@ public class Robot extends TimedRobot
 {
     private Command autonomousCommand;
 
-    private Command teleOpCommand = new TeleOpCommand();
+    private final Command teleOpCommand = new TeleOpCommand();
+    private final Command testCommand = new TestCommand();
     
     /**
      * This method is run when the robot is first started up and should be used for any
@@ -86,6 +88,7 @@ public class Robot extends TimedRobot
     {
         // Cancels all running commands at the start of test mode.
         CommandScheduler.getInstance().cancelAll();
+        testCommand.schedule();
     }
     
     
