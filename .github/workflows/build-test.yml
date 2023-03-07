@@ -29,12 +29,9 @@ jobs:
         with:
           repository: wpilibsuite/allwpilib
           ref: v2023.4.2
-      - name: Setup WPILib ARM Toolchain
-        if: steps.wpilib-cache.outputs.cache-hit != 'true'
-        run: ./gradlew installRoboRioToolchain
       - name: Build WPILib 
         if: steps.wpilib-cache.outputs.cache-hit != 'true'
-        run: ./gradlew build
+        run: ./gradlew build --build-cache
       - name: Publish WPILib to Local Maven
         run: ./gradlew publish
         
