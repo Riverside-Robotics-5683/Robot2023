@@ -44,7 +44,7 @@ jobs:
           path: allwpilib
       - name: Publish WPILib to Local Maven
         working-directory: allwpilib
-        run: ./gradlew :wpilibj:publish release
+        run: ./gradlew :wpilibj:publish -Prepo=release
         
       #Test our code
       - name: Checkout Robot Code
