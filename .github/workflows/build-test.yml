@@ -1,6 +1,6 @@
 on: push
 name: Build Test
-run-name: "Testing ${{ git rev-parse --short HEAD }}" 
+run-name: "Testing ${{ github.ref }}" 
 jobs:
   BuildTest:
     runs-on: ubuntu-latest
