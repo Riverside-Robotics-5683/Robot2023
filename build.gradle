@@ -60,6 +60,9 @@ repositories {
     }
     maven {
         url "https://dev.studica.com/maven/release/2023/"
+        content {
+            includeGroup "com.kauailabs"
+        }
     }
 }
 
