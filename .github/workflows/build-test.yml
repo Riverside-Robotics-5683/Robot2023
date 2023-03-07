@@ -1,6 +1,6 @@
 on: push
 name: Build Test
-run-name: "Testing ${{ github.ref }}" 
+run-name: "Testing ${{ github.sha }}" 
 jobs:
   BuildTest:
     runs-on: ubuntu-latest
@@ -31,18 +31,16 @@ jobs:
           ref: v2023.4.2
       - name: Setup WPILib ARM Toolchain
         if: steps.wpilib-cache.outputs.cache-hit != 'true'
-        working-directory: allwpilib
         run: ./gradlew installRoboRioToolchain
       - name: Build WPILib 
         if: steps.wpilib-cache.outputs.cache-hit != 'true'
-        working-directory: allwpilib
         run: ./gradlew build
       - name: Publish WPILib to Local Maven
-        working-directory: allwpilib
         run: ./gradlew publish
+        
+      #Test our code
       - name: Checkout Robot Code
         uses: actions/checkout@v3.3.0
       - name: Test Code
-        working-directory: Robot2023
         run: ./gradlew build
         
