@@ -36,7 +36,7 @@ jobs:
         run: ./gradlew :wpilibj:build
       - name: Create WPILib Cache
         if: steps.wpilib-cache.outputs.cache-hit != 'true'
-        uses: actions/cache/save@3.2.6
+        uses: actions/cache/save@v3.2.6
         with:
           key: wpilib-build
           path: allwpilib
