@@ -23,7 +23,7 @@ jobs:
         id: wpilib-cache
         uses: actions/cache@v3.2.6
         with:
-          path: allwpilib
+          path: ~/allwpilib
           key: wpilib-build 
       - name: Download WPILib
         if: steps.wpilib-cache.outputs.cache-hit != 'true'
@@ -31,6 +31,7 @@ jobs:
         with:
           repository: wpilibsuite/allwpilib
           ref: v2023.4.2
+      - run: "echo $(pwd)"
       - name: Build WPILib 
         if: steps.wpilib-cache.outputs.cache-hit != 'true'
         run: ./gradlew :wpilibj:build
@@ -39,7 +40,7 @@ jobs:
         uses: actions/cache/save@v3.2.6
         with:
           key: wpilib-build
-          path: allwpilib
+          path: ~/allwpilib
       - name: Publish WPILib to Local Maven
         run: ./gradlew publish
         
