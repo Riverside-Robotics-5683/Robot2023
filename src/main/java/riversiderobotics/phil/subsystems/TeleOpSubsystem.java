@@ -33,7 +33,7 @@ public class TeleOpSubsystem extends SubsystemBase
     private final CANSparkMax motor_arm_base_right = new CANSparkMax(Constants.MOTOR_ARM_BASE_RIGHT, CANSparkMaxLowLevel.MotorType.kBrushless);
 
     //Pneumatics
-    private final Compressor compressor = new Compressor(Constants.COMPRESSSOR, PneumaticsModuleType.REVPH);
+    private final Compressor compressor = new Compressor(Constants.COMPRESSOR, PneumaticsModuleType.REVPH);
   
     private final Solenoid left_gearbox = new Solenoid(PneumaticsModuleType.REVPH, Constants.GEARBOX_LEFT_CHANNEL);
     private final Solenoid right_gearbox = new Solenoid(PneumaticsModuleType.REVPH, Constants.GEARBOX_RIGHT_CHANNEL);

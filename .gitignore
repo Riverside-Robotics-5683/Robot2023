@@ -354,3 +354,5 @@ bin/
 
 # End entries from WPI Lib team
 
+.replit
+*.nix
