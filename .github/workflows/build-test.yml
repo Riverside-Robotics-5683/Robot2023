@@ -1,6 +1,6 @@
 on: push
 name: Build Test
-run-name: "Testing ${{ github.sha }}" 
+run-name: "Testing ${{ github.sha }} from ${{ github.actor }}" 
 jobs:
   BuildTest:
     runs-on: ubuntu-latest
