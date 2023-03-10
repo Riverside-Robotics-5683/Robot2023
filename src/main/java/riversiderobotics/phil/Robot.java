@@ -9,7 +9,6 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import riversiderobotics.phil.commands.TeleOpCommand;
-import riversiderobotics.phil.commands.TestCommand;
 
 
 /**
@@ -23,7 +22,6 @@ public class Robot extends TimedRobot
     private Command autonomousCommand;
 
     private final Command teleOpCommand = new TeleOpCommand();
-    private final Command testCommand = new TestCommand();
     
     /**
      * This method is run when the robot is first started up and should be used for any
@@ -36,8 +34,7 @@ public class Robot extends TimedRobot
     /**
      * This method is called every 20 ms, no matter the mode. Use this for items like diagnostics
      * that you want ran during disabled, autonomous, teleoperated and test.
-     *
-     * <p>This runs after the mode specific periodic methods, but before LiveWindow and
+     *     * <p>This runs after the mode specific periodic methods, but before LiveWindow and
      * SmartDashboard integrated updating.
      */
     @Override
@@ -88,7 +85,6 @@ public class Robot extends TimedRobot
     {
         // Cancels all running commands at the start of test mode.
         CommandScheduler.getInstance().cancelAll();
-        testCommand.schedule();
     }
     
     
