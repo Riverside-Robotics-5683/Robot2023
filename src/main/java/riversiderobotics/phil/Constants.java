@@ -19,7 +19,9 @@ public final class Constants
     public static final int MOTOR_ARM_BASE_RIGHT = 8;
 
     //Pneumatics
-    public static final int COMPRESSOR = 0;
-    public static final int GEARBOX_LEFT_CHANNEL = -1;
-    public static final int GEARBOX_RIGHT_CHANNEL = -2;
+    public static final int GEARBOX_LEFT_FORWARD = 0;
+    public static final int GEARBOX_LEFT_REVERSE = 1;
+
+    public static final int GEARBOX_RIGHT_FORWARD = 2;
+    public static final int GEARBOX_RIGHT_REVERSE = 3;
 }

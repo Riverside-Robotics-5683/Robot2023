@@ -9,7 +9,7 @@ import riversiderobotics.phil.Constants;
 
 public class Pneumatics
 {
-    private Compressor compressor = new Compressor(Constants.COMPRESSOR, PneumaticsModuleType.REVPH);
+    private Compressor compressor = new Compressor(PneumaticsModuleType.REVPH);
 
     public void enableCompressor()
     {

@@ -3,17 +3,15 @@ package riversiderobotics.phil.subsystems;
 import com.kauailabs.navx.frc.AHRS;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel;
-import edu.wpi.first.wpilibj.Compressor;
-import edu.wpi.first.wpilibj.PneumaticsModuleType;
-import edu.wpi.first.wpilibj.Solenoid;
-import edu.wpi.first.wpilibj.SPI;
-import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.*;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import riversiderobotics.phil.Constants;
 import riversiderobotics.phil.util.Pneumatics;
 import riversiderobotics.phil.util.Telemetry;
+
+import java.util.*;
 
 public class TeleOpSubsystem extends SubsystemBase
 {
@@ -32,11 +30,13 @@ public class TeleOpSubsystem extends SubsystemBase
     private final CANSparkMax motor_arm_base_left = new CANSparkMax(Constants.MOTOR_ARM_BASE_LEFT, CANSparkMaxLowLevel.MotorType.kBrushless);
     private final CANSparkMax motor_arm_base_right = new CANSparkMax(Constants.MOTOR_ARM_BASE_RIGHT, CANSparkMaxLowLevel.MotorType.kBrushless);
 
+    private final List<CANSparkMax> motors = Arrays.asList(motor_lb, motor_lf, motor_lt, motor_rb, motor_rf, motor_rt, motor_arm_base_left, motor_arm_base_right);
+
     //Pneumatics
-//    private final Compressor compressor = new Compressor(Constants.COMPRESSOR, PneumaticsModuleType.REVPH);
-//
-//    private final Solenoid left_gearbox = new Solenoid(PneumaticsModuleType.REVPH, Constants.GEARBOX_LEFT_CHANNEL);
-//    private final Solenoid right_gearbox = new Solenoid(PneumaticsModuleType.REVPH, Constants.GEARBOX_RIGHT_CHANNEL);
+    private final Compressor compressor = new Compressor(PneumaticsModuleType.REVPH);
+
+    private final DoubleSolenoid left_gearbox = new DoubleSolenoid(PneumaticsModuleType.REVPH, Constants.GEARBOX_LEFT_FORWARD, Constants.GEARBOX_LEFT_REVERSE);
+    private final DoubleSolenoid right_gearbox = new DoubleSolenoid(PneumaticsModuleType.REVPH, Constants.GEARBOX_RIGHT_FORWARD, Constants.GEARBOX_RIGHT_REVERSE);
 
     //Drivetrain
     private final MotorControllerGroup left_motor_group = new MotorControllerGroup(motor_lb, motor_lf, motor_lt);
@@ -56,42 +56,44 @@ public class TeleOpSubsystem extends SubsystemBase
     {
         double armPower = manipulator.getLeftY();
 
-//        if (driver.getLeftTriggerAxis() > 0.5f)
-//        {
-//          left_gearbox.set(true);
-//          right_gearbox.set(true);
-//        }
-//
-//        if (driver.getRightTriggerAxis() > 0.5f)
-//        {
-//          left_gearbox.set(false);
-//          right_gearbox.set(false);
-//        }
+        if (driver.getLeftTriggerAxis() > 0.5f)
+        {
+          left_gearbox.set(DoubleSolenoid.Value.kForward);
+          right_gearbox.set(DoubleSolenoid.Value.kForward);
+        }
+
+        if (driver.getRightTriggerAxis() > 0.5f)
+        {
+          left_gearbox.set(DoubleSolenoid.Value.kReverse);
+          right_gearbox.set(DoubleSolenoid.Value.kReverse);
+        }
 
         drivetrain.arcadeDrive(-driver.getLeftY(), driver.getRightX());
-      
-//        motor_arm_base_left.set(-armPower);
-//        motor_arm_base_right.set(armPower);
+
+
+        motor_arm_base_left.set(armPower);
+        motor_arm_base_right.set(armPower);
 
         telemetry.putNavx(gyro);
     }
 
-    public void initPneumatics()
+    public void init()
     {
-//        compressor.enableDigital();
         motor_lb.setIdleMode(CANSparkMax.IdleMode.kCoast);
         motor_lf.setIdleMode(CANSparkMax.IdleMode.kCoast);
         motor_lt.setIdleMode(CANSparkMax.IdleMode.kCoast);
         motor_rb.setIdleMode(CANSparkMax.IdleMode.kCoast);
         motor_rf.setIdleMode(CANSparkMax.IdleMode.kCoast);
         motor_rt.setIdleMode(CANSparkMax.IdleMode.kCoast);
-        
+
         motor_lb.setInverted(true);
         motor_lf.setInverted(true);
         motor_lt.setInverted(true);
+
+        motor_arm_base_left.setInverted(true);
     }
 
-    public void disablePneumatics()
+    public void disable()
     {
 //        compressor.disable();
     }

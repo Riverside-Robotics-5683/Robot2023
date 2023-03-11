@@ -15,7 +15,7 @@ public class TeleOpCommand extends CommandBase
     @Override
     public void initialize()
     {
-        subsystem.initPneumatics();
+        subsystem.init();
     }
 
    @Override
@@ -26,6 +26,6 @@ public class TeleOpCommand extends CommandBase
 
    public void end()
    {
-       subsystem.disablePneumatics();
+       subsystem.disable();
    }
 }
