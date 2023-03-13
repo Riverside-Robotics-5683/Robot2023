@@ -14,6 +14,8 @@ public final class Constants
     public static final int MOTOR_RB = 4;
     public static final int MOTOR_RF = 5;
     public static final int MOTOR_RT = 6;
+    
+    public static final int MOTOR_EXTEND = 9;
 
     public static final int MOTOR_ARM_BASE_LEFT = 7;
     public static final int MOTOR_ARM_BASE_RIGHT = 8;

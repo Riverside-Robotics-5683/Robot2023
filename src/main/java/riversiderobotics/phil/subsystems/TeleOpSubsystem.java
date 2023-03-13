@@ -7,6 +7,7 @@ import edu.wpi.first.wpilibj.*;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj2.command.button.POVButton;
 import riversiderobotics.phil.Constants;
 import riversiderobotics.phil.util.Pneumatics;
 import riversiderobotics.phil.util.Telemetry;
@@ -17,7 +18,8 @@ public class TeleOpSubsystem extends SubsystemBase
 {
     //Driver Station
     private final XboxController driver = new XboxController(Constants.DRIVER_PORT);
-    private final XboxController manipulator = new XboxController(Constants.MANIPULATOR_PORT);
+    // commented out manipulator controller since we are using dpad for arm rotation
+    //private final XboxController manipulator = new XboxController(Constants.MANIPULATOR_PORT);
 
     //Motors
     private final CANSparkMax motor_lb = new CANSparkMax(Constants.MOTOR_LB, CANSparkMaxLowLevel.MotorType.kBrushless);
@@ -41,9 +43,11 @@ public class TeleOpSubsystem extends SubsystemBase
     //Drivetrain
     private final MotorControllerGroup left_motor_group = new MotorControllerGroup(motor_lb, motor_lf, motor_lt);
     private final MotorControllerGroup right_motor_group = new MotorControllerGroup(motor_rb, motor_rf, motor_rt);
-
+    //Set both arm rotation motors to a motor controller group
+    //private final MotorControllerGroup armRotation_motor_group = new MotorControllerGroup(motor_arm_base_left, motor_arm_base_right);
+    //dif drive 
     private final DifferentialDrive drivetrain = new DifferentialDrive(left_motor_group, right_motor_group);
-  
+    private final DifferentialDrive armTrain = new DifferentialDrive(motor_arm_base_left,motor_arm_base_right);
     //Other
     private final AHRS gyro = new AHRS(SPI.Port.kMXP);
 
@@ -54,8 +58,8 @@ public class TeleOpSubsystem extends SubsystemBase
     @Override
     public void periodic()
     {
-        double armPower = manipulator.getLeftY();
-
+     
+        //Pneumatics
         if (driver.getLeftTriggerAxis() > 0.5f)
         {
           left_gearbox.set(DoubleSolenoid.Value.kForward);
@@ -67,12 +71,14 @@ public class TeleOpSubsystem extends SubsystemBase
           left_gearbox.set(DoubleSolenoid.Value.kReverse);
           right_gearbox.set(DoubleSolenoid.Value.kReverse);
         }
-
-        drivetrain.arcadeDrive(-driver.getLeftY(), driver.getRightX());
-
-
-        motor_arm_base_left.set(armPower);
-        motor_arm_base_right.set(armPower);
+    
+         //Drive base, DriveTrain 
+         drivetrain.arcadeDrive(-driver.getLeftY(), driver.getRightX());
+         //arm  
+         armTrain.arcadeDrive(driver.getPOV(0), driver.getPOV(180));
+       
+      
+         
 
         telemetry.putNavx(gyro);
     }
@@ -91,6 +97,7 @@ public class TeleOpSubsystem extends SubsystemBase
         motor_lt.setInverted(true);
 
         motor_arm_base_left.setInverted(true);
+        
     }
 
     public void disable()
