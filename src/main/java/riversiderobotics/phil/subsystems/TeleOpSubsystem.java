@@ -18,8 +18,7 @@ public class TeleOpSubsystem extends SubsystemBase
 {
     //Driver Station
     private final XboxController driver = new XboxController(Constants.DRIVER_PORT);
-    // commented out manipulator controller since we are using dpad for arm rotation
-    //private final XboxController manipulator = new XboxController(Constants.MANIPULATOR_PORT);
+    private final XboxController manipulator = new XboxController(Constants.MANIPULATOR_PORT);
 
     //Motors
     private final CANSparkMax motor_lb = new CANSparkMax(Constants.MOTOR_LB, CANSparkMaxLowLevel.MotorType.kBrushless);
@@ -31,14 +30,16 @@ public class TeleOpSubsystem extends SubsystemBase
 
     private final CANSparkMax motor_arm_base_left = new CANSparkMax(Constants.MOTOR_ARM_BASE_LEFT, CANSparkMaxLowLevel.MotorType.kBrushless);
     private final CANSparkMax motor_arm_base_right = new CANSparkMax(Constants.MOTOR_ARM_BASE_RIGHT, CANSparkMaxLowLevel.MotorType.kBrushless);
+    private final CANSparkMax motor_extend = new CANSparkMax(Constants.MOTOR_EXTEND, CANSparkMaxLowLevel.MotorType.kBrushless);
+
 
     private final List<CANSparkMax> motors = Arrays.asList(motor_lb, motor_lf, motor_lt, motor_rb, motor_rf, motor_rt, motor_arm_base_left, motor_arm_base_right);
 
     //Pneumatics
-    private final Compressor compressor = new Compressor(PneumaticsModuleType.REVPH);
+    private final Compressor compressor = new Compressor(Constants.PNEUMATICS_HUB, PneumaticsModuleType.REVPH);
 
-    private final DoubleSolenoid left_gearbox = new DoubleSolenoid(PneumaticsModuleType.REVPH, Constants.GEARBOX_LEFT_FORWARD, Constants.GEARBOX_LEFT_REVERSE);
-    private final DoubleSolenoid right_gearbox = new DoubleSolenoid(PneumaticsModuleType.REVPH, Constants.GEARBOX_RIGHT_FORWARD, Constants.GEARBOX_RIGHT_REVERSE);
+    private final DoubleSolenoid left_gearbox = new DoubleSolenoid(Constants.PNEUMATICS_HUB, PneumaticsModuleType.REVPH, Constants.GEARBOX_LEFT_FORWARD, Constants.GEARBOX_LEFT_REVERSE);
+    private final DoubleSolenoid right_gearbox = new DoubleSolenoid(Constants.PNEUMATICS_HUB, PneumaticsModuleType.REVPH, Constants.GEARBOX_RIGHT_FORWARD, Constants.GEARBOX_RIGHT_REVERSE);
 
     //Drivetrain
     private final MotorControllerGroup left_motor_group = new MotorControllerGroup(motor_lb, motor_lf, motor_lt);
@@ -47,7 +48,7 @@ public class TeleOpSubsystem extends SubsystemBase
     //private final MotorControllerGroup armRotation_motor_group = new MotorControllerGroup(motor_arm_base_left, motor_arm_base_right);
     //dif drive 
     private final DifferentialDrive drivetrain = new DifferentialDrive(left_motor_group, right_motor_group);
-    private final DifferentialDrive armTrain = new DifferentialDrive(motor_arm_base_left,motor_arm_base_right);
+
     //Other
     private final AHRS gyro = new AHRS(SPI.Port.kMXP);
 
@@ -58,7 +59,8 @@ public class TeleOpSubsystem extends SubsystemBase
     @Override
     public void periodic()
     {
-     
+        double armPower = manipulator.getLeftY();
+
         //Pneumatics
         if (driver.getLeftTriggerAxis() > 0.5f)
         {
@@ -74,23 +76,27 @@ public class TeleOpSubsystem extends SubsystemBase
     
          //Drive base, DriveTrain 
          drivetrain.arcadeDrive(-driver.getLeftY(), driver.getRightX());
-         //arm  
-         armTrain.arcadeDrive(driver.getPOV(0), driver.getPOV(180));
-       
-      
-         
+
+        motor_arm_base_left.set(armPower);
+        motor_arm_base_right.set(armPower);
 
         telemetry.putNavx(gyro);
     }
 
     public void init()
     {
+        compressor.enableDigital();
+
         motor_lb.setIdleMode(CANSparkMax.IdleMode.kCoast);
         motor_lf.setIdleMode(CANSparkMax.IdleMode.kCoast);
         motor_lt.setIdleMode(CANSparkMax.IdleMode.kCoast);
         motor_rb.setIdleMode(CANSparkMax.IdleMode.kCoast);
         motor_rf.setIdleMode(CANSparkMax.IdleMode.kCoast);
         motor_rt.setIdleMode(CANSparkMax.IdleMode.kCoast);
+
+        motor_arm_base_left.setIdleMode(CANSparkMax.IdleMode.kBrake);
+        motor_arm_base_right.setIdleMode(CANSparkMax.IdleMode.kBrake);
+        motor_extend.setIdleMode(CANSparkMax.IdleMode.kBrake);
 
         motor_lb.setInverted(true);
         motor_lf.setInverted(true);
@@ -102,26 +108,6 @@ public class TeleOpSubsystem extends SubsystemBase
 
     public void disable()
     {
-//        compressor.disable();
+        compressor.disable();
     }
-
-    /*⠀⠀⠀   ⠀⣠⣤⣤⣤⣤⣤⣶⣦⣤⣄⡀⠀⠀⠀⠀⠀⠀⠀⠀ 
-⠀⠀⠀⠀⠀⠀⠀⠀⢀⣴⣿⡿⠛⠉⠙⠛⠛⠛⠛⠻⢿⣿⣷⣤⡀⠀⠀⠀⠀⠀ 
-⠀⠀⠀⠀⠀⠀⠀⠀⣼⣿⠋⠀⠀⠀⠀⠀⠀⠀⢀⣀⣀⠈⢻⣿⣿⡄⠀⠀⠀⠀ 
-⠀⠀⠀⠀⠀⠀⠀⣸⣿⡏⠀⠀⠀⣠⣶⣾⣿⣿⣿⠿⠿⠿⢿⣿⣿⣿⣄⠀⠀⠀ 
-⠀⠀⠀⠀⠀⠀⠀⣿⣿⠁⠀⠀⢰⣿⣿⣯⠁⠀⠀⠀⠀⠀⠀⠀⠈⠙⢿⣷⡄⠀ 
-⠀⠀⣀⣤⣴⣶⣶⣿⡟⠀⠀⠀⢸⣿⣿⣿⣆⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣿⣷⠀ 
-⠀⢰⣿⡟⠋⠉⣹⣿⡇⠀⠀⠀⠘⣿⣿⣿⣿⣷⣦⣤⣤⣤⣶⣶⣶⣶⣿⣿⣿⠀ 
-⠀⢸⣿⡇⠀⠀⣿⣿⡇⠀⠀⠀⠀⠹⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⠃⠀ 
-⠀⣸⣿⡇⠀⠀⣿⣿⡇⠀⠀⠀⠀⠀⠉⠻⠿⣿⣿⣿⣿⡿⠿⠿⠛⢻⣿⡇⠀⠀ 
-⠀⣿⣿⠁⠀⠀⣿⣿⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢸⣿⣧⠀⠀ 
-⠀⣿⣿⠀⠀⠀⣿⣿⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢸⣿⣿⠀⠀ 
-⠀⣿⣿⠀⠀⠀⣿⣿⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢸⣿⣿⠀⠀ 
-⠀⢿⣿⡆⠀⠀⣿⣿⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢸⣿⡇⠀⠀ 
-⠀⠸⣿⣧⡀⠀⣿⣿⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣿⣿⠃⠀⠀ 
-⠀⠀⠛⢿⣿⣿⣿⣿⣇⠀⠀⠀⠀⠀⣰⣿⣿⣷⣶⣶⣶⣶⠶⢠⣿⣿⠀⠀⠀ 
-⠀⠀⠀⠀⠀⠀⠀⣿⣿⠀⠀⠀⠀⠀⣿⣿⡇⠀⣽⣿⡏⠁⠀⠀⢸⣿⡇⠀⠀⠀ 
-⠀⠀⠀⠀⠀⠀⠀⣿⣿⠀⠀⠀⠀⠀⣿⣿⡇⠀⢹⣿⡆⠀⠀⠀⣸⣿⠇⠀⠀⠀ 
-⠀⠀⠀⠀⠀⠀⠀⢿⣿⣦⣄⣀⣠⣴⣿⣿⠁⠀⠈⠻⣿⣿⣿⣿⡿⠏⠀⠀⠀⠀ 
-⠀⠀⠀⠀⠀⠀⠀⠈⠛⠻⠿⠿⠿⠿⠋⠁⠀⠀⠀ */
 }

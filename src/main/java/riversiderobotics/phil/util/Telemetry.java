@@ -1,6 +1,7 @@
 package riversiderobotics.phil.util;
 
 import com.kauailabs.navx.frc.AHRS;
+import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Telemetry

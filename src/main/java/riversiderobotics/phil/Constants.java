@@ -21,6 +21,9 @@ public final class Constants
     public static final int MOTOR_ARM_BASE_RIGHT = 8;
 
     //Pneumatics
+
+    public static final int PNEUMATICS_HUB = 11;
+
     public static final int GEARBOX_LEFT_FORWARD = 0;
     public static final int GEARBOX_LEFT_REVERSE = 1;
 
