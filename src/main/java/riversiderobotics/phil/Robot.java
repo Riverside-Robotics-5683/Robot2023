@@ -22,7 +22,7 @@ public class Robot extends TimedRobot
 {
     private Command autonomousCommand;
 
-    private final Command teleOpCommand = new TeleOpCommand();
+    private Container container;
     
     /**
      * This method is run when the robot is first started up and should be used for any
@@ -31,6 +31,7 @@ public class Robot extends TimedRobot
     @Override
     public void robotInit()
     {
+        container = new Container();
         PathPlannerServer.startServer(5683);
     }
     
@@ -63,8 +64,7 @@ public class Robot extends TimedRobot
 
     @Override
     public void autonomousInit()
-    {
-    }
+    {}
     
     
     /** This method is called periodically during autonomous. */
@@ -75,7 +75,11 @@ public class Robot extends TimedRobot
     @Override
     public void teleopInit()
     {
-        teleOpCommand.schedule();
+        if (autonomousCommand != null)
+        {
+          autonomousCommand.cancel();
+        }
+        
     }
     
     

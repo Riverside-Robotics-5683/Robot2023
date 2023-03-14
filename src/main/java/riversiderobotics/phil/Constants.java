@@ -29,4 +29,7 @@ public final class Constants
 
     public static final int GEARBOX_RIGHT_FORWARD = 2;
     public static final int GEARBOX_RIGHT_REVERSE = 3;
+
+    public static final int INTAKE_LEFT = 4;
+    public static final int INTAKE_RIGHT = 5;
 }
