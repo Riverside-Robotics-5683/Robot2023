@@ -2,59 +2,17 @@ on: push
 name: Build Test
 run-name: "Testing ${{ github.sha }} from ${{ github.actor }}" 
 jobs:
-  BuildTest:
+  build-code:
+    #Run on Ubuntu and use WIPILib's RoboRIO Docker container
     runs-on: ubuntu-latest
+    container: wpilib/roborio-cross-ubuntu:2023-22.04
     steps:
-      #Setup dependencies
-      - name: Install JDK 11
-        uses: actions/setup-java@v3.10.0
-        with:
-          java-version: 11
-          distribution: adopt 
-      - name: Install GCC
-        uses: Dup4/actions-setup-gcc@v1
-        with:
-          version: latest
-      - name: Install OpenGL
-        uses: openrndr/setup-opengl@v1.1
-      
-      #Install WPILib
-      - name: Retrieve WIPILib Cache
-        id: wpilib-cache
-        uses: actions/cache/restore@v3.2.6
-        with:
-          path: allwpilib
-          key: wpilib-build 
-      - name: Download WPILib
-        if: steps.wpilib-cache.outputs.cache-hit != 'true'
-        uses: actions/checkout@v3.3.0
-        with:
-          repository: wpilibsuite/allwpilib
-          path: allwpilib
-          ref: v2023.4.2
-      - name: Build WPILib 
-        if: steps.wpilib-cache.outputs.cache-hit != 'true'
-        working-directory: allwpilib
-        run: ./gradlew :wpilibj:build
-      - name: Create WPILib Cache
-        if: steps.wpilib-cache.outputs.cache-hit != 'true'
-        uses: actions/cache/save@v3.2.6
-        with:
-          key: wpilib-build
-          path: allwpilib
-      - name: Publish WPILib to Local Maven
-        working-directory: allwpilib
-        run: ./gradlew :wpilibj:publish -Prepo=release
-        
-      #Test our code
-      - name: Checkout Robot Code
-        uses: actions/checkout@v3.3.0
-        with:
-          path: robotcode
-      - name: Chmod Gradlew
-        working-directory: robotcode
-        run: chmod +x gradlew
-      - name: Test Code
-        working-directory: robotcode
-        run: ./gradlew build
-        
+      #Clone robot code
+      - name: Checkout code
+        uses: actions/checkout@v3
+      #Make gradlew (gradle) executable
+      - name: Make gradlew executable
+        run: "chmod +x ./gradlew"
+      #Compile robot code
+      - name: Build robot code
+        run: "./gradlew build"
