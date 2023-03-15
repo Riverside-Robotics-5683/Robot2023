@@ -4,6 +4,7 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
+import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj2.command.CommandBase;
@@ -19,37 +20,27 @@ public class ArmSubsystem extends SubsystemBase
   private final CANSparkMax motor_extend = new CANSparkMax(Constants.MOTOR_EXTEND, MotorType.kBrushless);
 
   // Pneumatics
-  private final Solenoid intake_left = new Solenoid(Constants.PNEUMATICS_HUB, PneumaticsModuleType.REVPH,
-      Constants.INTAKE_LEFT);
-  private final Solenoid intake_right = new Solenoid(Constants.PNEUMATICS_HUB, PneumaticsModuleType.REVPH,
-      Constants.INTAKE_RIGHT);
+  private final DoubleSolenoid intake = new DoubleSolenoid(Constants.PNEUMATICS_HUB, PneumaticsModuleType.REVPH, Constants.INTAKE_IN, Constants.INTAKE_OUT);
 
   public ArmSubsystem() 
   {
     motor_arm_left.setIdleMode(IdleMode.kBrake);
-    motor_arm_right.setIdleMode(IdleMode.kBrake);
+    motor_arm_right.setIdleMode(IdleMode.kCoast);
     motor_extend.setIdleMode(IdleMode.kBrake);
-
-    motor_arm_left.setInverted(true);
   }
 
   public void rotateArm(double speed)
   {
-    motor_arm_left.set(speed);
-    motor_arm_right.set(speed);
+    motor_arm_left.set(speed * .25);
   }
 
-  public void setIntake(boolean value)
+  public void extendArm(double speed)
   {
-    if (value == true)
-    {
-      intake_left.set(value);
-      intake_right.set(false);
-    }
-    else
-    {
-      intake_left.set(false);
-      intake_right.set(value);
-    }
+    motor_extend.set(speed * .125);
+  }
+
+  public void setIntake(DoubleSolenoid.Value value)
+  {
+    intake.set(value);
   }
 }

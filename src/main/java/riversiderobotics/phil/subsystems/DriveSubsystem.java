@@ -24,8 +24,7 @@ public class DriveSubsystem extends SubsystemBase
     private final CANSparkMax motor_rt = new CANSparkMax(Constants.MOTOR_RT, CANSparkMaxLowLevel.MotorType.kBrushless);
 
     //Pneumatics
-    private final DoubleSolenoid left_gearbox = new DoubleSolenoid(Constants.PNEUMATICS_HUB, PneumaticsModuleType.REVPH, Constants.GEARBOX_LEFT_FORWARD, Constants.GEARBOX_LEFT_REVERSE);
-    private final DoubleSolenoid right_gearbox = new DoubleSolenoid(Constants.PNEUMATICS_HUB, PneumaticsModuleType.REVPH, Constants.GEARBOX_RIGHT_FORWARD, Constants.GEARBOX_RIGHT_REVERSE);
+    private final DoubleSolenoid gearbox = new DoubleSolenoid(Constants.PNEUMATICS_HUB, PneumaticsModuleType.REVPH, Constants.GEARBOX_FORWARD, Constants.GEARBOX_REVERSE);
 
     //Drivetrain
     private final MotorControllerGroup left_motor_group = new MotorControllerGroup(motor_lb, motor_lf, motor_lt);
@@ -35,12 +34,12 @@ public class DriveSubsystem extends SubsystemBase
 
     public DriveSubsystem()
     {
-      motor_lb.setIdleMode(IdleMode.kCoast);
-      motor_lf.setIdleMode(IdleMode.kCoast);
-      motor_lt.setIdleMode(IdleMode.kCoast);
-      motor_rb.setIdleMode(IdleMode.kCoast);
-      motor_rf.setIdleMode(IdleMode.kCoast);
-      motor_rt.setIdleMode(IdleMode.kCoast);
+      motor_lb.setIdleMode(IdleMode.kBrake);
+      motor_lf.setIdleMode(IdleMode.kBrake);
+      motor_lt.setIdleMode(IdleMode.kBrake);
+      motor_rb.setIdleMode(IdleMode.kBrake);
+      motor_rf.setIdleMode(IdleMode.kBrake);
+      motor_rt.setIdleMode(IdleMode.kBrake);
 
       motor_lb.setInverted(true);
       motor_lf.setInverted(true);
@@ -54,15 +53,6 @@ public class DriveSubsystem extends SubsystemBase
 
     public void gearShift(DoubleSolenoid.Value value)
     {
-      if (value == Value.kForward)
-      {
-        left_gearbox.set(value);
-        right_gearbox.set(Value.kReverse);
-      }
-      else
-      {
-        left_gearbox.set(value);
-        right_gearbox.set(Value.kForward);
-      }
+      gearbox.set(value);
     }
 }

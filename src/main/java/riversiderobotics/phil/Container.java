@@ -7,6 +7,7 @@ import edu.wpi.first.wpilibj.XboxController.Button;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import riversiderobotics.phil.commands.GearShift;
+import riversiderobotics.phil.commands.IntakeManage;
 import riversiderobotics.phil.commands.NormalDrive;
 import riversiderobotics.phil.subsystems.ArmSubsystem;
 import riversiderobotics.phil.subsystems.DriveSubsystem;
@@ -29,13 +30,15 @@ public class Container
     //Run configure
     configure();
     //Set TeleOp command as default
-    drive.setDefaultCommand(new NormalDrive(drive, arm, -driver.getLeftY(), driver.getRightX(), manipulator.getLeftY()));
+    drive.setDefaultCommand(new NormalDrive(drive, arm, () -> -driver.getLeftY(), () -> driver.getRightX(), () -> manipulator.getLeftY(), () -> manipulator.getRightY()));
   }
 
   //Configure button bindings for driving
   private void configure()
   {
-    new JoystickButton(driver, Button.kLeftBumper.value).onTrue(new GearShift(drive, Value.kForward));
-    new JoystickButton(driver, Button.kRightBumper.value).onTrue(new GearShift(drive, Value.kReverse));
+    new JoystickButton(driver, Button.kX.value).onTrue(new GearShift(drive, Value.kForward));
+    new JoystickButton(driver, Button.kY.value).onTrue(new GearShift(drive, Value.kReverse));
+    new JoystickButton(manipulator, Button.kLeftBumper.value).onTrue(new IntakeManage(arm, Value.kForward));
+    new JoystickButton(manipulator, Button.kRightBumper.value).onTrue(new IntakeManage(arm, Value.kReverse));
   }
 }

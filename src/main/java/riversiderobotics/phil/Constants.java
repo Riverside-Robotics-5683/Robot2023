@@ -24,12 +24,9 @@ public final class Constants
 
     public static final int PNEUMATICS_HUB = 11;
 
-    public static final int GEARBOX_LEFT_FORWARD = 0;
-    public static final int GEARBOX_LEFT_REVERSE = 1;
+    public static final int GEARBOX_FORWARD = 0;
+    public static final int GEARBOX_REVERSE = 1;
 
-    public static final int GEARBOX_RIGHT_FORWARD = 2;
-    public static final int GEARBOX_RIGHT_REVERSE = 3;
-
-    public static final int INTAKE_LEFT = 4;
-    public static final int INTAKE_RIGHT = 5;
+    public static final int INTAKE_OUT = 2;
+    public static final int INTAKE_IN = 3;
 }
