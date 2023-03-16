@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import riversiderobotics.phil.commands.GearShift;
 import riversiderobotics.phil.commands.IntakeManage;
 import riversiderobotics.phil.commands.NormalDrive;
+import riversiderobotics.phil.commands.TestAutonomous;
 import riversiderobotics.phil.subsystems.ArmSubsystem;
 import riversiderobotics.phil.subsystems.DriveSubsystem;
 
@@ -25,12 +26,16 @@ public class Container
   //SendableChooser
   private final SendableChooser<Command> chooser = new SendableChooser<>();
 
+  private final TestAutonomous test_auto = new TestAutonomous();
+
   public Container()
   {
     //Run configure
     configure();
     //Set TeleOp command as default
-    drive.setDefaultCommand(new NormalDrive(drive, arm, () -> -driver.getLeftY(), () -> driver.getRightX(), () -> manipulator.getLeftY(), () -> manipulator.getRightY()));
+    drive.setDefaultCommand(new NormalDrive(drive, arm, () -> -driver.getLeftY(), () -> -driver.getRightX(), () -> -manipulator.getLeftY(), () -> manipulator.getRightY()));
+
+    chooser.setDefaultOption("Test", test_auto);
   }
 
   //Configure button bindings for driving

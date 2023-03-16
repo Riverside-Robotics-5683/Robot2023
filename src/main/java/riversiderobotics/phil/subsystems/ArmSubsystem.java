@@ -25,18 +25,18 @@ public class ArmSubsystem extends SubsystemBase
   public ArmSubsystem() 
   {
     motor_arm_left.setIdleMode(IdleMode.kBrake);
-    motor_arm_right.setIdleMode(IdleMode.kCoast);
+    motor_arm_right.setIdleMode(IdleMode.kBrake);
     motor_extend.setIdleMode(IdleMode.kBrake);
   }
 
   public void rotateArm(double speed)
   {
-    motor_arm_left.set(speed * .25);
+    motor_arm_left.set(speed * .45);
   }
 
   public void extendArm(double speed)
   {
-    motor_extend.set(speed * .125);
+    motor_extend.set(speed * .25);
   }
 
   public void setIntake(DoubleSolenoid.Value value)

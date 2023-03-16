@@ -5,13 +5,11 @@ import com.revrobotics.CANSparkMaxLowLevel;
 import com.revrobotics.CANSparkMax.IdleMode;
 
 import edu.wpi.first.wpilibj.*;
-import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import riversiderobotics.phil.Constants;
 
-import java.util.*;
 
 public class DriveSubsystem extends SubsystemBase
 {
@@ -48,7 +46,7 @@ public class DriveSubsystem extends SubsystemBase
 
     public void drive(double forward, double rotation)
     {
-      drivetrain.arcadeDrive(forward, rotation);
+      drivetrain.arcadeDrive(forward, rotation * .85);
     }
 
     public void gearShift(DoubleSolenoid.Value value)
