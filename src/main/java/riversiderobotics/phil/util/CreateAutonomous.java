@@ -8,7 +8,6 @@ import com.pathplanner.lib.commands.PPRamseteCommand;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.RamseteController;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
-import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandBase;
@@ -16,25 +15,24 @@ import riversiderobotics.phil.AutoConstants;
 import riversiderobotics.phil.subsystems.DriveSubsystem;
 
 import java.util.HashMap;
-import java.util.function.Supplier;
 
 public class CreateAutonomous
 {
-    private PPRamseteCommand ramsete;
+    private final PPRamseteCommand ramsete;
 
-    private PathPlannerTrajectory traj;
-    private FollowPathWithEvents path;
+    private final PathPlannerTrajectory traj;
+    private final FollowPathWithEvents path;
 
-    private AHRS gyro;
+    private final AHRS gyro;
 
-    private DifferentialDriveOdometry odometry;
+    private final DifferentialDriveOdometry odometry;
 
-    private DriveSubsystem drive;
+    private final DriveSubsystem drive;
 
-    public CreateAutonomous(String file, int maxVel, int maxAccel, AHRS gyro, DriveSubsystem drive, HashMap<String, Command> event_map)
+    public CreateAutonomous(String file, int maxVel, int maxAccel, AHRS _gyro, DriveSubsystem _drive, HashMap<String, Command> event_map)
     {
-        this.gyro = gyro;
-        this.drive = drive;
+        gyro = _gyro;
+        drive = _drive;
 
         traj = PathPlanner.loadPath(file, maxVel, maxAccel, false);
 
@@ -42,7 +40,7 @@ public class CreateAutonomous
 
         ramsete = new PPRamseteCommand(
                 traj,
-                (Supplier<Pose2d>) odometry,
+                odometry::getPoseMeters,
                 new RamseteController(AutoConstants.kRamseteB, AutoConstants.kRamseteZeta),
                 new SimpleMotorFeedforward(AutoConstants.ksVolts, AutoConstants.kvVoltSecondsPerMeter, AutoConstants.kaVoltSecondsSquaredMeter),
                 AutoConstants.kDriveKinematics,
