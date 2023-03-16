@@ -4,6 +4,7 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel;
 import com.revrobotics.CANSparkMax.IdleMode;
 
+import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
 import edu.wpi.first.wpilibj.*;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
@@ -52,5 +53,17 @@ public class DriveSubsystem extends SubsystemBase
     public void gearShift(DoubleSolenoid.Value value)
     {
       gearbox.set(value);
+    }
+
+    public DifferentialDriveWheelSpeeds getWheelSpeeds()
+    {
+        return new DifferentialDriveWheelSpeeds(motor_lb.getEncoder().getVelocity(), motor_rb.getEncoder().getVelocity());
+    }
+
+    public void feedVolts(double left, double right)
+    {
+        left_motor_group.setVoltage(left);
+        right_motor_group.setVoltage(right);
+        drivetrain.feed();
     }
 }

@@ -13,6 +13,7 @@ public class IntakeManage extends CommandBase
     {
         arm = subsystem;
         pos = _pos;
+        addRequirements(subsystem);
     }
 
     @Override

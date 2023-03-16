@@ -14,6 +14,7 @@ public class GearShift extends CommandBase
   {
     base = subsystem;
     value = position;
+    addRequirements(subsystem);
   }
 
   @Override
