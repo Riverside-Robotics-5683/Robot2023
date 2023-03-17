@@ -10,7 +10,6 @@ import edu.wpi.first.math.controller.RamseteController;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.CommandBase;
 import riversiderobotics.phil.AutoConstants;
 import riversiderobotics.phil.subsystems.DriveSubsystem;
 
@@ -58,7 +57,7 @@ public class CreateAutonomous
         );
     }
 
-    public CommandBase returnCommand()
+    public Command returnCommand()
     {
         return path;
     }
