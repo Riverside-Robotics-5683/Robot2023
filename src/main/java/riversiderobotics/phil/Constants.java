@@ -17,6 +17,10 @@ public final class Constants
     
     public static final int MOTOR_EXTEND = 9;
 
+    public static final int EXTEND_LIMIT = 100000;
+    public static final int ROTATE_BACK_START = 100000;
+    public static final int ROTATE_FORWARD_START = 100000;
+
     public static final int MOTOR_ARM_BASE_LEFT = 7;
     public static final int MOTOR_ARM_BASE_RIGHT = 8;
 

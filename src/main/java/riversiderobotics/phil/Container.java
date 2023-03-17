@@ -39,6 +39,7 @@ public class Container
   private HashMap<String, Command> events = new HashMap<>();
 
   private final Command test_auto = new CreateAutonomous("TestAutonomous", 4, 3, gyro, drive, events).returnCommand();
+  private final Command basic_left = new CreateAutonomous("BasicLeft", 4, 3, gyro, drive, events).returnCommand();
 
 
   public Container()
@@ -53,11 +54,11 @@ public class Container
     //Set TeleOp command as default
     drive.setDefaultCommand(new NormalDrive(drive, arm, () -> -driver.getLeftY(), () -> -driver.getRightX(), () -> -manipulator.getLeftY(), () -> manipulator.getRightY()));
 
+    chooser.setDefaultOption("Basic Left", basic_left);
     chooser.addOption("Test Auto", test_auto);
 
     SmartDashboard.putData(chooser);
   }
-
   //Configure button bindings for driving
   private void configure()
   {
@@ -65,5 +66,10 @@ public class Container
     new JoystickButton(driver, Button.kY.value).onTrue(new GearShift(drive, Value.kReverse));
     new JoystickButton(manipulator, Button.kLeftBumper.value).onTrue(new IntakeManage(arm, Value.kForward));
     new JoystickButton(manipulator, Button.kRightBumper.value).onTrue(new IntakeManage(arm, Value.kReverse));
+  }
+
+  public Command getAutonomous()
+  {
+    return chooser.getSelected();
   }
 }
