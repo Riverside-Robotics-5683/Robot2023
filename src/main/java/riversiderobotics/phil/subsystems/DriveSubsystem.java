@@ -66,4 +66,20 @@ public class DriveSubsystem extends SubsystemBase
         right_motor_group.setVoltage(right);
         drivetrain.feed();
     }
+
+    public void resetEncoders()
+    {
+        motor_lb.getEncoder().setPosition(0);
+        motor_lf.getEncoder().setPosition(0);
+        motor_lt.getEncoder().setPosition(0);
+        motor_rb.getEncoder().setPosition(0);
+        motor_rf.getEncoder().setPosition(0);
+        motor_rt.getEncoder().setPosition(0);
+    }
+
+    public void setPower(double leftPower, double rightPower)
+    {
+        left_motor_group.set(leftPower);
+        right_motor_group.set(rightPower);
+    }
 }

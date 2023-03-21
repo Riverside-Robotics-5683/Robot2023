@@ -35,6 +35,8 @@ public class CreateAutonomous
 
         traj = PathPlanner.loadPath(file, maxVel, maxAccel, false);
 
+        drive.resetEncoders();
+
         odometry = new DifferentialDriveOdometry(gyro.getRotation2d(), 0, 0, traj.getInitialPose());
 
         ramsete = new PPRamseteCommand(
@@ -47,6 +49,7 @@ public class CreateAutonomous
                 new PIDController(0, 0, 0),
                 new PIDController(0, 0, 0),
                 drive::feedVolts,
+                true,
                 drive
         );
 
