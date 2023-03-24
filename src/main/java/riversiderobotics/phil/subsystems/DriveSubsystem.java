@@ -47,8 +47,10 @@ public class DriveSubsystem extends SubsystemBase
 
     public void drive(double forward, double rotation)
     {
-      drivetrain.arcadeDrive(forward, rotation * .85);
+      drivetrain.arcadeDrive(forward, rotation * .67);
+      //Rotation original speed .85
     }
+
 
     public void gearShift(DoubleSolenoid.Value value)
     {

@@ -54,7 +54,9 @@ public class ArmSubsystem extends SubsystemBase
         return;
       }
     }
-    motor_extend.set(speed * .25);
+    motor_extend.set(speed * .15);
+    //original motor extend speed .25
+
   }
 
   public void setIntake(DoubleSolenoid.Value value)
