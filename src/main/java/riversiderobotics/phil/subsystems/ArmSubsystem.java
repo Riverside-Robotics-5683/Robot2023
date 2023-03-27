@@ -22,9 +22,6 @@ public class ArmSubsystem extends SubsystemBase
   // Pneumatics
   private final DoubleSolenoid intake = new DoubleSolenoid(Constants.PNEUMATICS_HUB, PneumaticsModuleType.REVPH, Constants.INTAKE_IN, Constants.INTAKE_OUT);
 
-  //Encoder
-  private final Encoder arm_rotate = new Encoder(0, 1);
-
   public ArmSubsystem() 
   {
     motor_arm_left.setIdleMode(IdleMode.kBrake);
@@ -35,8 +32,6 @@ public class ArmSubsystem extends SubsystemBase
     motor_arm_left.setInverted(true);
 
     motor_extend.getEncoder().setPosition(0);
-
-    arm_rotate.reset();
   }
 
   public void rotateArm(double speed)
@@ -47,16 +42,7 @@ public class ArmSubsystem extends SubsystemBase
 
   public void extendArm(double speed)
   {
-    if (arm_rotate.get() >= Constants.ROTATE_FORWARD_START || arm_rotate.get() <= Constants.ROTATE_BACK_START)
-    {
-      if (motor_extend.getEncoder().getPosition() >= Constants.EXTEND_LIMIT)
-      {
-        return;
-      }
-    }
     motor_extend.set(speed * .15);
-    //original motor extend speed .25
-
   }
 
   public void setIntake(DoubleSolenoid.Value value)
@@ -67,7 +53,6 @@ public class ArmSubsystem extends SubsystemBase
   public void resetEncoders()
   {
     motor_extend.getEncoder().setPosition(0);
-    arm_rotate.reset();
   }
 
   public void extendToPosition(double position, double speed)
@@ -89,7 +74,6 @@ public class ArmSubsystem extends SubsystemBase
   @Override
   public void periodic()
   {
-    SmartDashboard.putNumber("Arm Encoder", arm_rotate.get());
     SmartDashboard.putNumber("Arm Extension Encoder", motor_extend.getEncoder().getPosition());
   }
 }

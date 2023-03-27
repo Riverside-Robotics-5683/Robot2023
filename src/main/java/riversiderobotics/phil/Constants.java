@@ -28,10 +28,8 @@ public final class Constants
 
     public static final int PNEUMATICS_HUB = 11;
 
-    public static final int GEARBOX_FORWARD = 4;
-    //original is 0
-    public static final int GEARBOX_REVERSE =  5;
-    //original is 1 second 1 now 5
+    public static final int GEARBOX_FORWARD = 0;
+    public static final int GEARBOX_REVERSE =  1;
 
     public static final int INTAKE_OUT = 2;
     public static final int INTAKE_IN = 3;

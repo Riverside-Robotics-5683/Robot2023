@@ -44,6 +44,8 @@ public class Container
   private final Command basic_right = new CreateAutonomous("BasicRight", 4, 3, gyro, drive, events).returnCommand();
   private final Command really_basic = new ReallyBasicAuto(drive);
 
+  private final Command basic = new CreateAutonomous("Basic", 4, 3, gyro, drive, events).returnCommand();
+
   public Container()
   {
     gyro.calibrate();
@@ -52,12 +54,12 @@ public class Container
     //Put all the autonomous markers
     events.put("printPass", new PrintCommand("Passed marker!"));
     events.put("printNearFinish", new PrintCommand("Near the finish!"));
-    events.put("autoBalance", new AutoBalance(gyro, drive, 0.125, 0.25, 13, 6, 0.2));
+    events.put("autoBalance", new AutoBalance(gyro, drive, 0.2, -0.3, 13, 6, 0.2));
     drive.resetEncoders();
     arm.resetEncoders();
 
     //Set TeleOp command as default
-    drive.setDefaultCommand(new NormalDrive(drive, arm, () -> -driver.getLeftY(), () -> -driver.getRightX(), () -> manipulator.getLeftY(), () -> manipulator.getRightY()));
+    drive.setDefaultCommand(new NormalDrive(drive, arm, driver::getLeftY, driver::getRightX, () -> manipulator.getLeftY(), () -> manipulator.getRawAxis(3)));
 
     chooser.setDefaultOption("Basic Left", basic_left);
     chooser.addOption("Basic Center Left", basic_center_left);
@@ -67,14 +69,15 @@ public class Container
     chooser.addOption("Really Basic", really_basic);
     chooser.addOption("No Auto", null);
     chooser.addOption("Test Auto", test_auto);
+    chooser.addOption("Basic", basic);
 
     SmartDashboard.putData(chooser);
   }
   //Configure button bindings for driving
   private void configure()
   {
-    new JoystickButton(driver, Button.kX.value).onTrue(new ShiftGear(drive, Value.kForward);
-    new JoystickButton(driver, Button.kY.value).onTrue(new ShiftGear(drive, Value.kReverse));
+    new JoystickButton(driver, Button.kLeftBumper.value).onTrue(new ShiftGear(drive, Value.kForward));
+    new JoystickButton(driver, Button.kRightBumper.value).onTrue(new ShiftGear(drive, Value.kReverse));
     new JoystickButton(manipulator, Button.kRightBumper.value).onTrue(new IntakeManage(arm, Value.kForward));
     new JoystickButton(manipulator, Button.kLeftBumper.value).onTrue(new IntakeManage(arm, Value.kReverse));
   }

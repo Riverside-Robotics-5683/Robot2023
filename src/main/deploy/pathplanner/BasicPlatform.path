@@ -24,12 +24,12 @@
     },
     {
       "anchorPoint": {
-        "x": 3.8899452084618455,
-        "y": 2.920207554700824
+        "x": 5.0,
+        "y": 2.92
       },
       "prevControl": {
-        "x": 2.8899452084618455,
-        "y": 2.920207554700824
+        "x": 4.0,
+        "y": 2.92
       },
       "nextControl": null,
       "holonomicAngle": 0,
@@ -45,12 +45,5 @@
       }
     }
   ],
-  "markers": [
-    {
-      "position": 1.0,
-      "names": [
-        "autoBalance"
-      ]
-    }
-  ]
+  "markers": []
 }

@@ -40,14 +40,17 @@ public class DriveSubsystem extends SubsystemBase
       motor_rf.setIdleMode(IdleMode.kBrake);
       motor_rt.setIdleMode(IdleMode.kBrake);
 
-      motor_lb.setInverted(true);
-      motor_lf.setInverted(true);
-      motor_lt.setInverted(true);
+      motor_rb.setInverted(true);
+      motor_rf.setInverted(true);
+      motor_rt.setInverted(true);
+      motor_lb.setInverted(false);
+      motor_lf.setInverted(false);
+      motor_lt.setInverted(false);
     }
 
     public void drive(double forward, double rotation)
     {
-      drivetrain.arcadeDrive(forward, rotation * .67);
+      drivetrain.arcadeDrive(forward, rotation);
       //Rotation original speed .85
     }
 
@@ -59,7 +62,7 @@ public class DriveSubsystem extends SubsystemBase
 
     public DifferentialDriveWheelSpeeds getWheelSpeeds()
     {
-        return new DifferentialDriveWheelSpeeds(motor_lb.getEncoder().getVelocity(), motor_rb.getEncoder().getVelocity());
+        return new DifferentialDriveWheelSpeeds(motor_lb.getEncoder().getPosition(), motor_rb.getEncoder().getPosition());
     }
 
     public void feedVolts(double left, double right)

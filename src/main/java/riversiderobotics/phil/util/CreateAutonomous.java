@@ -42,14 +42,14 @@ public class CreateAutonomous
         ramsete = new PPRamseteCommand(
                 traj,
                 odometry::getPoseMeters,
-                new RamseteController(AutoConstants.kRamseteB, AutoConstants.kRamseteZeta),
+                new RamseteController(),
                 new SimpleMotorFeedforward(AutoConstants.ksVolts, AutoConstants.kvVoltSecondsPerMeter, AutoConstants.kaVoltSecondsSquaredMeter),
                 AutoConstants.kDriveKinematics,
                 drive::getWheelSpeeds,
-                new PIDController(0, 0, 0),
-                new PIDController(0, 0, 0),
+                new PIDController(AutoConstants.kPDriveVel, 0, 0),
+                new PIDController(AutoConstants.kPDriveVel, 0, 0),
                 drive::feedVolts,
-                true,
+                false,
                 drive
         );
 
