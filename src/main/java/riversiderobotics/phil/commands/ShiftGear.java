@@ -6,20 +6,33 @@ import riversiderobotics.phil.subsystems.DriveSubsystem;
 
 public class ShiftGear extends CommandBase
 {
-    private DriveSubsystem drive;
-    private DoubleSolenoid.Value value;
-
-    public ShiftGear(DriveSubsystem subsystem, DoubleSolenoid.Value position)
+    public enum SHIFTING_GEARS
     {
-        addRequirements(subsystem);
+        HIGH_SPEED,
+        HIGH_TORQUE
+    }
+
+    private DriveSubsystem drive;
+    private SHIFTING_GEARS value;
+
+    public ShiftGear(DriveSubsystem subsystem, SHIFTING_GEARS gear)
+    {
         drive = subsystem;
-        value = position;
+        value = gear;
+        addRequirements(drive);
     }
 
     @Override
     public void initialize()
     {
-        drive.gearShift(value);
+        if (value.ordinal() == 0)
+        {
+            drive.gearShift(DoubleSolenoid.Value.kForward);
+        }
+        else if (value.ordinal() == 1)
+        {
+            drive.gearShift(DoubleSolenoid.Value.kReverse);
+        }
     }
 
     @Override

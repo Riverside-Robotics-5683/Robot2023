@@ -31,6 +31,9 @@ public class DriveSubsystem extends SubsystemBase
 
     private final DifferentialDrive drivetrain = new DifferentialDrive(left_motor_group, right_motor_group);
 
+    private double rampRate = 0.02;
+    private double currentPower = 0;
+
     public DriveSubsystem()
     {
       motor_lb.setIdleMode(IdleMode.kBrake);
@@ -50,8 +53,22 @@ public class DriveSubsystem extends SubsystemBase
 
     public void drive(double forward, double rotation)
     {
-      drivetrain.arcadeDrive(forward, rotation);
-      //Rotation original speed .85
+        if(gearbox.get() == DoubleSolenoid.Value.kReverse)
+        {
+            if (forward < currentPower)
+            {
+                currentPower = forward;
+            }
+            if (currentPower < forward)
+            {
+                currentPower += rampRate;
+            }
+        }
+        else
+        {
+            currentPower = forward;
+        }
+        drivetrain.arcadeDrive(currentPower, rotation);
     }
 
 
@@ -86,5 +103,10 @@ public class DriveSubsystem extends SubsystemBase
     {
         left_motor_group.set(leftPower);
         right_motor_group.set(rightPower);
+    }
+
+    public void setRampRate(double value)
+    {
+        rampRate = value;
     }
 }

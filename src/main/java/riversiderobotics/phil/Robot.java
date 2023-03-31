@@ -6,6 +6,8 @@
 package riversiderobotics.phil;
 
 import com.pathplanner.lib.server.PathPlannerServer;
+import edu.wpi.first.cameraserver.CameraServer;
+import edu.wpi.first.cscore.UsbCamera;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
@@ -22,7 +24,9 @@ public class Robot extends TimedRobot
     private Command autonomousCommand;
 
     private Container container;
-    
+
+    private UsbCamera camera;
+
     /**
      * This method is run when the robot is first started up and should be used for any
      * initialization code.
@@ -32,6 +36,12 @@ public class Robot extends TimedRobot
     {
         container = new Container();
         PathPlannerServer.startServer(5683);
+
+        camera = new UsbCamera("Blur Cam 2.0", 0);
+        camera.setResolution(640, 480);
+        camera.setFPS(30);
+
+        CameraServer.addCamera(camera);
     }
     
     

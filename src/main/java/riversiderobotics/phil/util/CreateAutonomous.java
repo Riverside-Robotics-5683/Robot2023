@@ -49,7 +49,6 @@ public class CreateAutonomous
                 new PIDController(AutoConstants.kPDriveVel, 0, 0),
                 new PIDController(AutoConstants.kPDriveVel, 0, 0),
                 drive::feedVolts,
-                false,
                 drive
         );
 
