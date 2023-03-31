@@ -76,10 +76,10 @@ public class Container
   //Configure button bindings for driving
   private void configure()
   {
-    new JoystickButton(driver, Button.kX.value).onTrue(new ShiftGear(drive, ShiftGear.SHIFTING_GEARS.HIGH_TORQUE));
-    new JoystickButton(driver, Button.kY.value).onTrue(new ShiftGear(drive, ShiftGear.SHIFTING_GEARS.HIGH_SPEED));
     new JoystickButton(driver, Button.kA.value).onTrue(new ChangeRampRate(drive, 0.02));
     new JoystickButton(driver, Button.kB.value).onTrue(new ChangeRampRate(drive, 0.04));
+    new JoystickButton(driver, Button.kX.value).onTrue(new ChangeRampRate(drive, 0.06));
+    new JoystickButton(driver, Button.kY.value).onTrue(new ChangeRampRate(drive, 0.08));
 
     new JoystickButton(manipulator, Button.kRightBumper.value).onTrue(new IntakeManage(arm, Value.kForward));
     new JoystickButton(manipulator, Button.kLeftBumper.value).onTrue(new IntakeManage(arm, Value.kReverse));

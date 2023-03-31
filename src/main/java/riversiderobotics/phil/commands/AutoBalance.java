@@ -106,6 +106,7 @@ public class AutoBalance extends CommandBase
     @Override
     public void initialize()
     {
+        gyro.reset();
         drive.gearShift(DoubleSolenoid.Value.kForward);
     }
 

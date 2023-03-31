@@ -8,6 +8,7 @@ import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
 import edu.wpi.first.wpilibj.*;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import riversiderobotics.phil.Constants;
 
@@ -33,6 +34,7 @@ public class DriveSubsystem extends SubsystemBase
 
     private double rampRate = 0.02;
     private double currentPower = 0;
+    private double targetPower = 0;
 
     public DriveSubsystem()
     {
@@ -53,22 +55,23 @@ public class DriveSubsystem extends SubsystemBase
 
     public void drive(double forward, double rotation)
     {
-        if(gearbox.get() == DoubleSolenoid.Value.kReverse)
+        targetPower = forward;
+        if (targetPower == 0)
         {
-            if (forward < currentPower)
-            {
-                currentPower = forward;
-            }
-            if (currentPower < forward)
-            {
-                currentPower += rampRate;
-            }
+            currentPower = 0;
         }
-        else
+
+        if (currentPower <= targetPower)
         {
-            currentPower = forward;
+            currentPower += rampRate;
         }
-        drivetrain.arcadeDrive(currentPower, rotation);
+
+        if (currentPower >= targetPower)
+        {
+            currentPower -= rampRate;
+        }
+
+        drivetrain.arcadeDrive(currentPower, rotation * 0.65);
     }
 
 
@@ -108,5 +111,13 @@ public class DriveSubsystem extends SubsystemBase
     public void setRampRate(double value)
     {
         rampRate = value;
+    }
+
+    @Override
+    public void periodic()
+    {
+        SmartDashboard.putNumber("Ramp Rate", rampRate);
+        SmartDashboard.putNumber("Current Power", currentPower);
+        SmartDashboard.putNumber("Target", targetPower);
     }
 }
