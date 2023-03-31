@@ -25,11 +25,11 @@ public class ShiftGear extends CommandBase
     @Override
     public void initialize()
     {
-        if (value == HIGH_TORQUE)
+        if (value == SHIFTING_GEARS.HIGH_TORQUE)
         {
             drive.gearShift(DoubleSolenoid.Value.kForward);
         }
-        else if (value == HIGH_SPEED)
+        else if (value == SHIFTING_GEARS.HIGH_SPEED)
         {
             drive.gearShift(DoubleSolenoid.Value.kReverse);
         }
